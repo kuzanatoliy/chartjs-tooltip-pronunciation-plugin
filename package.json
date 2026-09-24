@@ -1,0 +1,69 @@
+{
+  "name": "@kuzanatoliorg/chartjs-keyboard-plugin",
+  "version": "1.0.0",
+  "private": false,
+  "description": "Chartjs keyboard navigation plugin",
+  "keywords": [
+    "chartjs",
+    "a11y",
+    "accessability",
+    "keyboard novigation"
+  ],
+  "homepage": "https://github.com/kuzanatoliy/chartjs-keyboard-plugin#readme",
+  "bugs": {
+    "url": "https://github.com/kuzanatoliy/chartjs-keyboard-plugin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kuzanatoliy/chartjs-keyboard-plugin.git"
+  },
+  "license": "MIT",
+  "author": "kuzanatoliy <njkznu@gmail.com>",
+  "type": "module",
+  "scripts": {
+    "build": "rollup -c",
+    "prettier:check": "prettier --check .",
+    "prettier:write": "prettier --write .",
+    "lint": "eslint src/**/*.{js,ts}",
+    "commitlint": "commitlint --edit",
+    "test": "jest src --coverage"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.2",
+    "@commitlint/config-conventional": "^21.2.2",
+    "@eslint/js": "^10.0.1",
+    "@kuzanatoliorg/commitlint-config": "^1.4.0",
+    "@kuzanatoliorg/prettier-config": "^1.16.0",
+    "@rollup/plugin-typescript": "^12.3.0",
+    "@types/jest": "^30.0.0",
+    "eslint": "^10.8.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.6",
+    "globals": "^17.11.0",
+    "husky": "^9.1.7",
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1",
+    "prettier": "^3.9.6",
+    "rollup": "^4.63.1",
+    "rollup-plugin-dts": "^6.5.1",
+    "ts-jest": "^29.4.12",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.67.0"
+  },
+  "peerDependencies": {
+    "chart.js": ">=3.0.0"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  }
+}
