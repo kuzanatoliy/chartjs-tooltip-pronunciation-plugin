@@ -5,7 +5,7 @@ module.exports = {
   },
   parserPreset: {
     parserOpts: {
-      issuePrefixes: ['CKP-'],
+      issuePrefixes: ['CTPP-'],
     },
   },
 };

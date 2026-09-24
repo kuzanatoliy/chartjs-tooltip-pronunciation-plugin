@@ -1,3 +1,2 @@
-export * from './constants';
-export * from './chartjs-keyboard-plugin';
 export type * from './types';
+export * from './chartjs-tooltip-pronunciation-plugin';
