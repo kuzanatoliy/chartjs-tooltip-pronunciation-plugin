@@ -1,21 +1,24 @@
 {
-  "name": "@kuzanatoliorg/chartjs-keyboard-plugin",
-  "version": "1.0.0",
+  "name": "@kuzanatoliorg/chartjs-tooltip-pronunciation-plugin",
+  "version": "0.0.0",
   "private": false,
-  "description": "Chartjs keyboard navigation plugin",
+  "description": "Chartjs tooltip pronunciation plugin",
   "keywords": [
     "chartjs",
     "a11y",
     "accessability",
-    "keyboard novigation"
+    "Chart.js plugin",
+    "screen reader tooltips",
+    "WCAG compliance",
+    "react-chartjs-2"
   ],
-  "homepage": "https://github.com/kuzanatoliy/chartjs-keyboard-plugin#readme",
+  "homepage": "https://github.com/kuzanatoliy/chartjs-tooltip-pronunciation-plugin#readme",
   "bugs": {
-    "url": "https://github.com/kuzanatoliy/chartjs-keyboard-plugin/issues"
+    "url": "https://github.com/kuzanatoliy/chartjs-tooltip-pronunciation-plugin/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kuzanatoliy/chartjs-keyboard-plugin.git"
+    "url": "git+https://github.com/kuzanatoliy/chartjs-tooltip-pronunciation-plugin.git"
   },
   "license": "MIT",
   "author": "kuzanatoliy <njkznu@gmail.com>",

@@ -1,12 +1,12 @@
-# chartjs-keyboard-plugin
+# chartjs-tooltip-pronunciation-plugin
 
-[![npm version](https://img.shields.io/npm/v/@kuzanatoliorg/chartjs-keyboard-plugin)](https://www.npmjs.com/package/@kuzanatoliorg/chartjs-keyboard-plugin) [![npm downloads](https://img.shields.io/npm/dm/@kuzanatoliorg/chartjs-keyboard-plugin)](https://www.npmjs.com/package/@kuzanatoliorg/chartjs-keyboard-plugin) [![License](https://img.shields.io/github/license/kuzanatoliy/chartjs-keyboard-plugin)](https://github.com/kuzanatoliy/chartjs-keyboard-plugin/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/@kuzanatoliorg/chartjs-tooltip-pronunciation-plugin)](https://www.npmjs.com/package/@kuzanatoliorg/chartjs-tooltip-pronunciation-plugin) [![npm downloads](https://img.shields.io/npm/dm/@kuzanatoliorg/chartjs-tooltip-pronunciation-plugin)](https://www.npmjs.com/package/@kuzanatoliorg/chartjs-tooltip-pronunciation-plugin) [![License](https://img.shields.io/github/license/kuzanatoliy/chartjs-tooltip-pronunciation-plugin)](https://github.com/kuzanatoliy/chartjs-tooltip-pronunciation-plugin/blob/main/LICENSE)
 
-[![GitHub stars](https://img.shields.io/github/stars/kuzanatoliy/chartjs-keyboard-plugin)](https://github.com/kuzanatoliy/chartjs-keyboard-plugin/stargazers) [![GitHub issues](https://img.shields.io/github/issues/kuzanatoliy/chartjs-keyboard-plugin)](https://github.com/kuzanatoliy/chartjs-keyboard-plugin/issues)
+[![GitHub stars](https://img.shields.io/github/stars/kuzanatoliy/chartjs-tooltip-pronunciation-plugin)](https://github.com/kuzanatoliy/chartjs-tooltip-pronunciation-plugin/stargazers) [![GitHub issues](https://img.shields.io/github/issues/kuzanatoliy/chartjs-tooltip-pronunciation-plugin)](https://github.com/kuzanatoliy/chartjs-tooltip-pronunciation-plugin/issues)
 
-An accessibility-focused **Chart.js plugin that implements seamless keyboard navigation** for interactive data charts. Perfect for improving web accessibility (a11y), satisfying compliance guidelines, and elevating dashboard user experiences.
+An accessibility-focused **Chart.js plugin that bridges the gap for screen reader users** by automatically pronouncing tooltip content. Since native Chart.js tooltips are drawn purely visually on the `<canvas>` element, they are completely invisible to screen readers (like NVDA, VoiceOver, JAWS). This plugin fixes that by dynamically injecting the active tooltip's data into a visually hidden ARIA live region (`role="status"`), ensuring the data is seamlessly read aloud to assistive technology users and helping your dashboards achieve **WCAG compliance**.
 
-🚀 **[Try the Interactive Demo](https://kuzanatoliy.github.io/chartjs-demo/)** | 📺 **[Watch the Video Walkthrough](https://www.youtube.com/watch?v=rJHDyqld9X8)**
+🚀 **[Try the Interactive Demo](https://kuzanatoliy.github.io/chartjs-demo/)** | 📺 **[Watch the Video Walkthrough](https://youtu.be/oreFQl_IjDM)**
 
 ## Table of Contents
 
@@ -15,20 +15,17 @@ An accessibility-focused **Chart.js plugin that implements seamless keyboard nav
 - [Getting Started](#getting-started)
   - [Vanilla Chart.js Execution](#vanilla-chartjs-execution)
   - [React Framework Integration](#react-framework-integration-react-chartjs-2)
-  - [Canvas Focus & Accessibility](#canvas-focus--accessibility)
-- [Keyboard Mappings](#keyboard-mappings)
 - [Configuration Options](#configuration-options)
-  - [Navigation Strategies Breakdown](#navigation-strategies-breakdown)
 - [TypeScript Definitions](#typescript-definitions)
 
 ---
 
 ## Features
 
-- ♿ **a11y Compliant:** Empowers keyboard-only users to navigate canvas data.
-- 🗺️ **5 Navigation Strategies:** Tailor how focus states shift across data sets and items.
-- 🌍 **RTL Support:** Native right-to-left layout configuration for internationalized applications.
-- 📦 **Zero-Config Starter:** Registers instantly with vanilla projects or React wrapper frameworks.
+- ♿ **a11y Compliant:** Empowers screen reader users to understand interactive chart data and aids in WCAG 2.1 / ADA compliance.
+- 🗣️ **Seamless Pronunciation:** Automatically updates an ARIA live region when the active tooltip changes.
+- ⚙️ **Fully Customizable:** Exposes a simple `pronunciationFormatter` function to precisely format the spoken string, ensuring perfect localization and semantic meaning.
+- 📦 **Framework Agnostic:** Works smoothly with Vanilla JS or React wrapper frameworks.
 
 ---
 
@@ -37,148 +34,129 @@ An accessibility-focused **Chart.js plugin that implements seamless keyboard nav
 ### npm
 
 ```bash
-npm install @kuzanatoliorg/chartjs-keyboard-plugin
+npm install @kuzanatoliorg/chartjs-tooltip-pronunciation-plugin
 ```
 
 ### yarn
 
 ```bash
-yarn add @kuzanatoliorg/chartjs-keyboard-plugin
+yarn add @kuzanatoliorg/chartjs-tooltip-pronunciation-plugin
 ```
 
 ### pnpm
 
 ```bash
-pnpm add @kuzanatoliorg/chartjs-keyboard-plugin
+pnpm add @kuzanatoliorg/chartjs-tooltip-pronunciation-plugin
 ```
 
 ---
 
 ## Getting Started
 
-To enable keyboard navigation, you need to register the plugin with [Chart.js](https://chartjs.org). Once registered, the plugin will automatically add comprehensive keyboard support to your charts.
+To enable screen reader support for tooltips, you need to register the plugin with [Chart.js](https://chartjs.org) and provide a `pronunciationFormatter` configuration option.
 
 ### Vanilla Chart.js Execution
 
-Register the plugin globally in your application:
+Register the plugin globally or per chart instance:
 
 ```javascript
 import Chart from 'chart.js/auto';
-import { chartjsKeyboardPlugin } from '@kuzanatoliorg/chartjs-keyboard-plugin';
-
-Chart.register(chartjsKeyboardPlugin);
-```
-
-Or you can register the plugin for a specific chart instance:
-
-```javascript
-import Chart from 'chart.js/auto';
-import { chartjsKeyboardPlugin } from '@kuzanatoliorg/chartjs-keyboard-plugin';
+import { chartjsTooltipPronunciationPlugin } from '@kuzanatoliorg/chartjs-tooltip-pronunciation-plugin';
 
 const chart = new Chart(ctx, {
     type: 'bar',
     data: chartData,
-    plugins: [chartjsKeyboardPlugin]
+    options: {
+        plugins: {
+            chartjsTooltipPronunciationPlugin: {
+                // REQUIRED: Construct the text to be announced by the screen reader.
+                // (`tooltipItems` is an array of standard Chart.js TooltipItem objects)
+                pronunciationFormatter: (tooltipItems) => {
+                    return tooltipItems
+                        .map(item => `${item.dataset.label}: ${item.formattedValue}`)
+                        .join(', ');
+                }
+            }
+        }
+    },
+    plugins: [chartjsTooltipPronunciationPlugin]
 });
 ```
 
 ### React Framework Integration (`react-chartjs-2`)
 
-For React applications using `react-chartjs-2`, register the plugin globally with `ChartJS`:
-
-```javascript
-import { Chart as ChartJS } from 'chart.js';
-import { chartjsKeyboardPlugin } from '@kuzanatoliorg/chartjs-keyboard-plugin';
-
-ChartJS.register(chartjsKeyboardPlugin);
-```
-
-Or you can register the plugin for a specific chart component:
+For React applications using `react-chartjs-2`, you can pass the plugin in the `plugins` array and provide the formatter in `options`:
 
 ```javascript
 import { Bar } from 'react-chartjs-2';
-import { chartjsKeyboardPlugin } from '@kuzanatoliorg/chartjs-keyboard-plugin';
+import { chartjsTooltipPronunciationPlugin } from '@kuzanatoliorg/chartjs-tooltip-pronunciation-plugin';
 
 function MyChart() {
+  const options = {
+    plugins: {
+      chartjsTooltipPronunciationPlugin: {
+        pronunciationFormatter: (tooltipItems) => {
+          return tooltipItems
+            .map(item => `${item.dataset.label}: ${item.formattedValue}`)
+            .join(', ');
+        }
+      }
+    }
+  };
+
   return (
     <Bar
       data={data}
       options={options}
-      plugins={[chartjsKeyboardPlugin]}
+      plugins={[chartjsTooltipPronunciationPlugin]}
     />
   );
 }
 ```
 
-### Canvas Focus & Accessibility
-
-For keyboard navigation to work, the HTML5 `<canvas>` element must be focusable so it can capture keydown events.
-
-- **Automated Setup:** If your `<canvas>` element lacks a `tabindex` attribute, **the plugin will automatically inject `tabindex="0"`** upon initialization. This allows users to instantly navigate to the chart container via the `Tab` key.
-
-* **Custom Control:** If you prefer manual layout orchestration or want to exclude the chart from a specific tab order sequence, you can pre-define any valid `tabindex` (e.g., `<canvas tabindex="1">` or `tabindex="-1"`) directly in your HTML structure, and the plugin will respect your custom configuration without overriding it.
-
-> **💡 Compatibility Note:** Fully tested and optimized for **Chart.js `3.x`** and **`4.x+`** frameworks.
-
----
-
-## Keyboard Mappings
-
-The plugin supports the following keys for navigating the chart UI (behavior may vary slightly depending on the active strategy):
-
-| Input Command | Action & Behavioral Mapping |
-| :-- | :-- |
-| `Arrow Left` | Focus previous item _(Reversed in RTL mode)_ |
-| `Arrow Right` | Focus next item _(Reversed in RTL mode)_ |
-| `Arrow Up` | Focus previous item _(Moves to previous dataset in `balance` strategy)_ |
-| `Arrow Down` | Focus next item _(Moves to next dataset in `balance` strategy)_ |
-| `Home` | Instantly jump focus to the first available data node |
-| `End` | Instantly jump focus to the final available data node |
-| `Enter` / `Space` | Selects active node and triggers tooltip display |
-| `Escape` | Dismisses focus state and hides active tooltip window |
-
 ---
 
 ## Configuration Options
 
-Fine-tune keyboard targeting behaviors via the main `chartjsKeyboardPlugin` configuration envelope:
+Fine-tune how the tooltip is pronounced via the main `chartjsTooltipPronunciationPlugin` configuration envelope:
 
 ```javascript
 const chart = new Chart(ctx, {
     options: {
         plugins: {
-            chartjsKeyboardPlugin: {
-                // Select navigation mechanic: 'balance' (default) | 'data-first' | 'dataset-first' | 'data' | 'dataset'
-                strategy: 'balance',
-                // Interface text layout flow: 'ltr' (default) | 'rtl'
-                direction: 'ltr'
+            chartjsTooltipPronunciationPlugin: {
+                /**
+                 * (Required) Function that takes the active Chart.js TooltipItems and
+                 * returns a string to be pronounced by the screen reader.
+                 * (`tooltipItems` is an array of standard Chart.js TooltipItem objects)
+                 *
+                 * By default, a console warning is emitted if this is not provided.
+                 */
+                pronunciationFormatter: (tooltipItems) => {
+                    // Example formatting: "Sales: $500, Expenses: $300"
+                    return tooltipItems
+                        .map(item => `${item.dataset.label}: ${item.formattedValue}`)
+                        .join(', ');
+                }
             },
         }
     }
 });
 ```
 
-### Navigation Strategies Breakdown
-
-- **`balance` _(Default)_**: `Up`/`Down` transitions across distinct datasets; `Left`/`Right` navigates item nodes inside the active set.
-- **`data-first`**: Step item-by-item through an individual dataset; automatically shifts to flanking datasets upon reaching endpoints.
-- **`dataset-first`**: Step dataset-by-dataset vertically; increments to adjacent index data items on edge boundaries.
-- **`data`**: Highlights matching indexes globally across all unified datasets simultaneously.
-- **`dataset`**: Isolates navigation targeting strictly to items contained within the highlighted dataset.
-
 ---
 
 ## TypeScript Definitions
 
-Extend your environment types smoothly. Place a `global.d.ts` file within your source directory structures:
+Extend your environment types smoothly if you're using TypeScript. Place a `global.d.ts` file within your source directory structure:
 
 ```typescript
 import { ChartType } from 'chart.js';
-import { type TChartjsKeyboardPluginOptions } from '@kuzanatoliorg/chartjs-keyboard-plugin';
+import { type TChartjsTooltipPronunciationPluginOptions } from '@kuzanatoliorg/chartjs-tooltip-pronunciation-plugin';
 
 declare module 'chart.js' {
   interface PluginOptionsByType<TType extends ChartType> {
-    chartjsKeyboardPlugin?: TChartjsKeyboardPluginOptions;
+    chartjsTooltipPronunciationPlugin?: TChartjsTooltipPronunciationPluginOptions;
   }
 }
 ```
