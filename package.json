@@ -1,6 +1,6 @@
 {
   "name": "@kuzanatoliorg/chartjs-tooltip-pronunciation-plugin",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": false,
   "description": "Chartjs tooltip pronunciation plugin",
   "keywords": [
