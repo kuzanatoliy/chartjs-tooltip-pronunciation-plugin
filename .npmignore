@@ -1,0 +1,16 @@
+node_modules
+coverage
+.github
+.husky
+src
+.gitignore
+.npmignore
+.prettierrc.cjs
+commitlint.config.cjs
+eslint.config.js
+jest.config.cjs
+package-lock.json
+tsconfig.cjs.json
+tsconfig.esm.json
+tsconfig.json
+rollup.config.js
